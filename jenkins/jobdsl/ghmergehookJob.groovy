@@ -30,6 +30,7 @@ freeStyleJob('master/ghmergehook') {
     }
 
     triggers {
+        //TODO disable this webhook for private folders
         githubPullRequest {
             admin(Common.githubUser)
             triggerPhrase('test this please')
@@ -44,7 +45,7 @@ freeStyleJob('master/ghmergehook') {
         for (folder in foldersToCheck.keySet()){
             conditionalSteps {
                 condition {
-                    shell("../shell/CheckChanges.sh ${folder}")
+                    shell("${WORKSPACE}/shell/CheckChanges.sh ${folder}")
                 }
                 steps {
                     downstreamParameterized {

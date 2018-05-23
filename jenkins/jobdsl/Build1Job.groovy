@@ -10,14 +10,10 @@ freeStyleJob('master/BuildJob1') {
             remote {
                 credentials(Common.githubCredentialsID)
                 github(Common.githubURL)
-                refspec('+refs/pull/*:refs/remotes/origin/pr/*')
             }
-            extensions{
-                cloneOptions{
 
-                }
-            }
-            branch('${sha1}')
+            //TODO parameterize branch name
+            branch('refs/remotes/origin/master')
         }
     }
 
