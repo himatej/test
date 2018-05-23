@@ -50,6 +50,9 @@ freeStyleJob('master/ghmergehook') {
                 steps {
                     downstreamParameterized {
                         trigger(foldersToCheck.get(folder)) {
+                            parameters {
+                                predefinedProp('BRANCH_TO_BUILD', '$GIT_BRANCH')
+                            }
                             block {
                                 buildStepFailure('FAILURE')
                                 failure('FAILURE')

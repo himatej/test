@@ -1,6 +1,10 @@
 import Common
 freeStyleJob('master/BuildJob1') {
 
+    parameters {
+        stringParam('BRANCH_TO_BUILD', 'master', '')
+    }
+
     properties {
         githubProjectUrl(Common.githubProjectURL)
     }
@@ -13,7 +17,7 @@ freeStyleJob('master/BuildJob1') {
             }
 
             //TODO parameterize branch name
-            branch('refs/remotes/origin/master')
+            branch('refs/remotes/origin/${BRANCH_TO_BUILD}')
         }
     }
 
