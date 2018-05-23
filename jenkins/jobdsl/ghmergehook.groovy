@@ -3,7 +3,7 @@ final foldersToCheck = [
         build2 : 'BuildJob2'
 ]
 
-freeStyleJob('ghmergehook') {
+freeStyleJob('master/ghmergehook') {
 
     properties {
         githubProjectUrl(Common.githubProjectURL)

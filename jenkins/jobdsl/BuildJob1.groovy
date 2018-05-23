@@ -1,4 +1,4 @@
-freeStyleJob('BuildJob1') {
+freeStyleJob('master/BuildJob1') {
 
     properties {
         githubProjectUrl(Common.githubProjectURL)
