@@ -1,3 +1,5 @@
+import Common
+
 final foldersToCheck = [
         build1 : 'BuildJob1',
         build2 : 'BuildJob2'

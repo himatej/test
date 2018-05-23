@@ -1,3 +1,4 @@
+import Common
 freeStyleJob('master/BuildJob2') {
 
     properties {
