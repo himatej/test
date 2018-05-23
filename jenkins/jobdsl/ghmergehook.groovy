@@ -5,6 +5,8 @@ final foldersToCheck = [
         build2 : 'BuildJob2'
 ]
 
+//TODO change master to take branch name and create folder
+//TODO write wrapper class for freeStyleJob
 freeStyleJob('master/ghmergehook') {
 
     properties {
