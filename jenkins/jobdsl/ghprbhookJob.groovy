@@ -83,7 +83,7 @@ freeStyleJob('master/ghprbhook') {
                     keepForever(true)
                     showDirectlyInBrowser(false)
                     bucket('jenkins-valtix/${JOB_NAME}-${BUILD_NUMBER}')
-                    sourceFile('foo')
+                    sourceFile('controller/controller.txt')
                     selectedRegion('us-east-1')
                     storageClass('STANDARD')
                     noUploadOnFailure(true)
