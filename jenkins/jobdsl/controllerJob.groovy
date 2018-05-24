@@ -1,5 +1,6 @@
 import Common
-freeStyleJob('master/BuildJob1') {
+
+freeStyleJob('master/controllerJob') {
 
     parameters {
         stringParam('BRANCH_TO_BUILD', 'master', '')
@@ -22,6 +23,6 @@ freeStyleJob('master/BuildJob1') {
     }
 
     steps {
-        shell('echo "Running build job 1"')
+        shell('echo "Running controller job"')
     }
 }

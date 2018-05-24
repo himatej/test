@@ -1,13 +1,8 @@
 import Common
 
-final foldersToCheck = [
-        build1 : 'BuildJob1',
-        build2 : 'BuildJob2'
-]
-
 //TODO change master to take branch name and create folder
 //TODO write wrapper class for freeStyleJob
-freeStyleJob('master/ghmergehook') {
+freeStyleJob('master/ghprbhook') {
 
     properties {
         githubProjectUrl(Common.githubProjectURL)
@@ -42,15 +37,16 @@ freeStyleJob('master/ghmergehook') {
 
     steps {
         //Loop through all folders to check for changes and run respective jobs
-        for (folder in foldersToCheck.keySet()){
+        for (folder in Common.foldersToCheck.keySet()){
             conditionalSteps {
                 condition {
-                    shell("\${WORKSPACE}/jenkins/shell/CheckChanges.sh ${folder}")
+                    shell("\${WORKSPACE}/shell/checkchanges.sh ${folder}")
                 }
                 steps {
                     downstreamParameterized {
                         trigger(foldersToCheck.get(folder)) {
                             parameters {
+                                //$GIT_BRANCH is set by jenkins when ghprbhook is triggered
                                 predefinedProp('BRANCH_TO_BUILD', '$GIT_BRANCH')
                             }
                             block {

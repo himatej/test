@@ -1,5 +1,6 @@
 import Common
-freeStyleJob('master/BuildJob2') {
+
+freeStyleJob('master/datapathJob') {
 
     parameters {
         stringParam('BRANCH_TO_BUILD', 'master', '')
@@ -22,6 +23,6 @@ freeStyleJob('master/BuildJob2') {
     }
 
     steps {
-        shell('echo "Running build job 2"')
+        shell('echo "Running datapath job"')
     }
 }
