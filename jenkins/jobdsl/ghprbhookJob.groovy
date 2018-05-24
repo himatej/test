@@ -40,7 +40,7 @@ freeStyleJob('master/ghprbhook') {
         for (folder in Common.foldersToCheck.keySet()){
             conditionalSteps {
                 condition {
-                    shell("\${WORKSPACE}/shell/checkchanges.sh ${folder}")
+                    shell("\${WORKSPACE}/jenkins/shell/checkchanges.sh ${folder}")
                 }
                 steps {
                     downstreamParameterized {
