@@ -15,8 +15,8 @@ freeStyleJob('master/ghprbhook') {
                 github(Common.githubURL)
                 refspec('+refs/pull/*:refs/remotes/origin/pr/*')
             }
-            extensions{
-                cloneOptions{
+            extensions {
+                cloneOptions {
 
                 }
             }
@@ -40,7 +40,7 @@ freeStyleJob('master/ghprbhook') {
         shell("sudo git fetch")
 
         //Loop through all folders to check for changes and run respective jobs
-        for (folder in Common.foldersToCheck.keySet()){
+        for (folder in Common.foldersToCheck.keySet()) {
             conditionalSteps {
                 condition {
                     shell("\${WORKSPACE}/jenkins/shell/checkchanges.sh ${folder}")
@@ -60,6 +60,41 @@ freeStyleJob('master/ghprbhook') {
                         }
                     }
                 }
+            }
+        }
+    }
+
+
+    publishers {
+        //using dynamic DSL
+        //TODO write wrapper for this for future reusability and change option values to variables
+        s3BucketPublisher {
+            //DO NOT CHANGE 'aws-jenkins'
+            //given in system configuration
+            //TODO make 'aws-jenkins' dynamic(directly taken from system configuration if possible)
+            profileName('aws-jenkins')
+            entries {
+                entry {
+                    dontWaitForConcurrentBuildCompletion(false)
+                    consoleLogLevel('INFO')
+                    pluginFailureResultConstraint('FAILURE')
+                    excludedFile('')
+                    gzipFiles(false)
+                    keepForever(true)
+                    showDirectlyInBrowser(false)
+                    bucket('jenkins-valtix/${JOB_NAME}-${BUILD_NUMBER}')
+                    sourceFile('foo')
+                    selectedRegion('us-east-1')
+                    storageClass('STANDARD')
+                    noUploadOnFailure(true)
+                    uploadFromSlave(true)
+                    managedArtifacts(false)
+                    useServerSideEncryption(false)
+                    flatten(false)
+                }
+            }
+            userMetadata {
+
             }
         }
     }
