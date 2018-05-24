@@ -2,7 +2,7 @@ import Common
 
 //TODO change master to take branch name and create folder
 //TODO write wrapper class for freeStyleJob
-freeStyleJob('master/ghprbhook') {
+multiJob('master/ghprbhook') {
 
     properties {
         githubProjectUrl(Common.githubProjectURL)
@@ -46,16 +46,12 @@ freeStyleJob('master/ghprbhook') {
                     shell("\${WORKSPACE}/jenkins/shell/checkchanges.sh ${folder}")
                 }
                 steps {
-                    downstreamParameterized {
-                        trigger(Common.foldersToCheck.get(folder)) {
-                            parameters {
+                    phase(${folder}){
+                        phaseJob(Common.foldersToCheck.get(folder)){
+                            currentJobParameters(false)
+                            parameters{
                                 //$GIT_BRANCH is set by jenkins when ghprbhook is triggered
                                 predefinedProp('BRANCH_TO_BUILD', '$GIT_BRANCH')
-                            }
-                            block {
-                                buildStepFailure('FAILURE')
-                                failure('FAILURE')
-                                unstable('UNSTABLE')
                             }
                         }
                     }
