@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Checking to see if changes are made to a particular folder
-if [[ $(sudo git diff --name-only origin/master $1/) ]]
+if [[ $(sudo git diff --name-only remotes/origin/master $1/) ]]
 then
     echo "Changes to $1 folder detected. Will run $1 job"
 else
