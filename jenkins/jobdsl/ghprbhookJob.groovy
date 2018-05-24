@@ -44,7 +44,7 @@ freeStyleJob('master/ghprbhook') {
                 }
                 steps {
                     downstreamParameterized {
-                        trigger(foldersToCheck.get(folder)) {
+                        trigger(Common.foldersToCheck.get(folder)) {
                             parameters {
                                 //$GIT_BRANCH is set by jenkins when ghprbhook is triggered
                                 predefinedProp('BRANCH_TO_BUILD', '$GIT_BRANCH')
