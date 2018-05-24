@@ -36,6 +36,9 @@ freeStyleJob('master/ghprbhook') {
     }
 
     steps {
+        //fix for new changes to master not detecting
+        shell("sudo git fetch")
+
         //Loop through all folders to check for changes and run respective jobs
         for (folder in Common.foldersToCheck.keySet()){
             conditionalSteps {
