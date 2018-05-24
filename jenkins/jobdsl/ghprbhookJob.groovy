@@ -46,7 +46,7 @@ multiJob('master/ghprbhook') {
                     shell("\${WORKSPACE}/jenkins/shell/checkchanges.sh ${folder}")
                 }
                 steps {
-                    phase(${folder}){
+                    phase("${folder}"){
                         phaseJob(Common.foldersToCheck.get(folder)){
                             currentJobParameters(false)
                             parameters{
