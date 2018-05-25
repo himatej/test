@@ -4,7 +4,7 @@ class Common{
     final static githubProjectURL = 'https://github.com/himatej/test'
 
     //id comes from jenkins store
-    final static githubCredentialsID = '58dce1a2-9b50-4f78-b828-cb24fa8f1fe3'
+    final static githubCredentialsID = '93c6a674-4dbd-47de-b9af-aabf9462c183'
 
     //add the folders to check for changes and mapping respective job script
     final static foldersToCheck = [

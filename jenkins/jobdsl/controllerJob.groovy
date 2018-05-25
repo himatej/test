@@ -1,6 +1,6 @@
 import Common
 
-freeStyleJob('master/controllerJob') {
+freeStyleJob('controllerJob') {
 
     parameters {
         stringParam('BRANCH_TO_BUILD', 'master', '')

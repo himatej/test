@@ -2,7 +2,7 @@ import Common
 
 //TODO change master to take branch name and create folder
 //TODO write wrapper class for freeStyleJob
-multiJob('master/ghprbhook') {
+multiJob('ghprbhook') {
 
     properties {
         githubProjectUrl(Common.githubProjectURL)

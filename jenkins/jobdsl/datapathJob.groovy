@@ -1,6 +1,6 @@
 import Common
 
-freeStyleJob('master/datapathJob') {
+freeStyleJob('datapathJob') {
 
     parameters {
         stringParam('BRANCH_TO_BUILD', 'master', '')
