@@ -1,5 +1,6 @@
-freeStyleJob('seed_subfolder'){
-    parameters{
+def build_url = binding.variables.get('BUILD_URL')
+freeStyleJob('seed_subfolder') {
+    parameters {
         stringParam('BRANCH_TO_GENERATE', 'master', '')
     }
 
@@ -14,23 +15,25 @@ freeStyleJob('seed_subfolder'){
             branch('refs/remotes/origin/${BRANCH_TO_GENERATE}')
         }
     }
+//No subfolder in master folders
+    if (!build_url.contains('master')) {
+        steps {
+            dsl {
+                lookupStrategy('SEED_JOB')
+                text("folder(binding.variables.get('BRANCH_TO_GENERATE'))")
+            }
+            dsl {
+                lookupStrategy('SEED_JOB')
+                external('jenkins/jobdsl/seed.groovy')
+            }
 
-    steps{
-        dsl{
-            lookupStrategy('SEED_JOB')
-            text("folder(binding.variables.get('BRANCH_TO_GENERATE'))")
-        }
-        dsl{
-            lookupStrategy('SEED_JOB')
-            external('jenkins/jobdsl/seed.groovy')
-        }
-
-        downstreamParameterized{
-            trigger('${BRANCH_TO_GENERATE}/seed'){
-                block {
-                    buildStepFailure('FAILURE')
-                    failure('FAILURE')
-                    unstable('UNSTABLE')
+            downstreamParameterized {
+                trigger('${BRANCH_TO_GENERATE}/seed') {
+                    block {
+                        buildStepFailure('FAILURE')
+                        failure('FAILURE')
+                        unstable('UNSTABLE')
+                    }
                 }
             }
         }
