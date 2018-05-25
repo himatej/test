@@ -1,5 +1,9 @@
 import Common
-freeStyleJob(binding.variables.get('binding_branch')+'/seed'){
+
+//comes from seed_subfolder
+//FIXME make the independent of the seed_subfolder
+def branch_folder = binding.variables.get('BRANCH_TO_GENERATE')
+freeStyleJob(branch_folder+'/seed'){
     scm {
         git {
             remote {
@@ -8,7 +12,7 @@ freeStyleJob(binding.variables.get('binding_branch')+'/seed'){
             }
 
             //TODO parameterize branch name
-            branch('refs/remotes/origin/'+binding.variables.get('binding_branch'))
+            branch('refs/remotes/origin/'+branch_folder)
         }
     }
     steps{
