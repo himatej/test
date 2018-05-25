@@ -24,16 +24,16 @@ multiJob('ghprbhook') {
         }
     }
 
-    triggers {
-        //TODO disable this webhook for private folders
-        githubPullRequest {
-            admin(Common.githubUser)
-            triggerPhrase('test this please')
-            useGitHubHooks()
-            permitAll()
-            displayBuildErrorsOnDownstreamBuilds()
-        }
-    }
+//    triggers {
+//        //TODO disable this webhook for private folders
+//        githubPullRequest {
+//            admin(Common.githubUser)
+//            triggerPhrase('test this please')
+//            useGitHubHooks()
+//            permitAll()
+//            displayBuildErrorsOnDownstreamBuilds()
+//        }
+//    }
 
     steps {
         //fix for new changes to master not detecting
@@ -56,41 +56,6 @@ multiJob('ghprbhook') {
                         }
                     }
                 }
-            }
-        }
-    }
-
-
-    publishers {
-        //using dynamic DSL
-        //TODO write wrapper for this for future reusability and change option values to variables
-        s3BucketPublisher {
-            //DO NOT CHANGE 'aws-jenkins'
-            //given in system configuration
-            //TODO make 'aws-jenkins' dynamic(directly taken from system configuration if possible)
-            profileName('aws-jenkins')
-            entries {
-                entry {
-                    dontWaitForConcurrentBuildCompletion(false)
-                    consoleLogLevel('INFO')
-                    pluginFailureResultConstraint('FAILURE')
-                    excludedFile('')
-                    gzipFiles(false)
-                    keepForever(true)
-                    showDirectlyInBrowser(false)
-                    bucket('jenkins-valtix/${JOB_NAME}-${BUILD_NUMBER}')
-                    sourceFile('controller/controller.txt')
-                    selectedRegion('us-east-1')
-                    storageClass('STANDARD')
-                    noUploadOnFailure(true)
-                    uploadFromSlave(true)
-                    managedArtifacts(false)
-                    useServerSideEncryption(false)
-                    flatten(false)
-                }
-            }
-            userMetadata {
-
             }
         }
     }
