@@ -3,10 +3,6 @@ freeStyleJob('seed_subfolder'){
         stringParam('BRANCH_TO_GENERATE', 'master', '')
     }
 
-    environmentVariables{
-        env('binding_branch', '${BRANCH_TO_GENERATE}')
-    }
-
     scm {
         git {
             remote {
@@ -22,7 +18,7 @@ freeStyleJob('seed_subfolder'){
     steps{
         dsl{
             lookupStrategy('SEED_JOB')
-            text("folder(binding.variables.get('binding_branch'))")
+            text("folder(binding.variables.get('BRANCH_TO_GENERATE'))")
         }
         dsl{
             lookupStrategy('SEED_JOB')

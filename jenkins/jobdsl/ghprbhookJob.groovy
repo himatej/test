@@ -24,16 +24,18 @@ multiJob('ghprbhook') {
         }
     }
 
-//    triggers {
-//        //TODO disable this webhook for private folders
-//        githubPullRequest {
-//            admin(Common.githubUser)
-//            triggerPhrase('test this please')
-//            useGitHubHooks()
-//            permitAll()
-//            displayBuildErrorsOnDownstreamBuilds()
-//        }
-//    }
+    if (!binding.variables.get('BUILD_URL').contains('private')) {
+        triggers {
+            githubPullRequest {
+                admin(Common.githubUser)
+                triggerPhrase('test this please')
+                useGitHubHooks()
+                permitAll()
+                displayBuildErrorsOnDownstreamBuilds()
+            }
+        }
+    }
+
 
     steps {
         //fix for new changes to master not detecting
@@ -46,10 +48,10 @@ multiJob('ghprbhook') {
                     shell("\${WORKSPACE}/jenkins/shell/checkchanges.sh ${folder}")
                 }
                 steps {
-                    phase("${folder}"){
-                        phaseJob(Common.foldersToCheck.get(folder)){
+                    phase("${folder}") {
+                        phaseJob(Common.foldersToCheck.get(folder)) {
                             currentJobParameters(false)
-                            parameters{
+                            parameters {
                                 //$GIT_BRANCH is set by jenkins when ghprbhook is triggered
                                 predefinedProp('BRANCH_TO_BUILD', '$GIT_BRANCH')
                             }
