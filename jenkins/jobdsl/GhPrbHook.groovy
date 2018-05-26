@@ -14,7 +14,7 @@ class GhPrbHook {
     ]
 
     GhPrbHook(binding) {
-        this.jobDsl = BaseJob.getMultiJob(binding.jobFactory, '')
+        this.jobDsl = BaseJob.getMultiJob(binding.jobFactory, 'ghprbhook')
         this.BUILD_URL = binding.variables.get('BUILD_URL')
         this.branchEnv = binding.variables.get(SeedJob.branchParamKey)
     }
