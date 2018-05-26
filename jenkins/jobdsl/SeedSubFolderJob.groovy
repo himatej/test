@@ -2,6 +2,7 @@ import util.*
 
 class SeedSubFolderJob {
     def jobDsl
+    def gitScm
     def static branchParamKey = 'BRANCH_TO_BUILD'
 
     SeedSubFolderJob(binding) {
@@ -11,12 +12,21 @@ class SeedSubFolderJob {
     def generate() {
         this.generateParams()
         this.generateSteps()
+        this.generateGit()
         return this
+    }
+
+    private generateGit() {
+        this.gitScm = new GitScm()
+        this.gitScm.with {
+            gitBranch = '${' + branchParamKey + '}'
+        }
+        this.gitScm.generate(this.jobDsl)
     }
 
     private generateParams() {
         this.jobDsl.parameters {
-            stringParam(this.branchParamKey, '', '')
+            stringParam(this.branchParamKey, 'master', '')
         }
     }
 
