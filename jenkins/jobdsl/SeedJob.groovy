@@ -14,6 +14,7 @@ class SeedJob {
     def generate() {
         this.generateParams()
         this.generateSteps()
+        this.generateGit()
         return this
     }
 
