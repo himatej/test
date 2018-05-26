@@ -2,6 +2,7 @@ import util.*
 
 class SeedJob {
     def jobDsl
+    def gitScm
     def static branchParamKey = 'Branch'
     def branchEnv
 
@@ -16,15 +17,23 @@ class SeedJob {
         return this
     }
 
+    private generateGit() {
+        this.gitScm = new GitScm()
+        this.gitScm.with {
+            gitBranch = '${' + branchParamKey + '}'
+        }
+        this.gitScm.generate(this.jobDsl)
+    }
+
     private generateParams() {
         this.jobDsl.parameters {
             stringParam(this.branchParamKey, this.branchEnv, '')
         }
     }
 
-    private generateSteps(){
-        this.jobDsl.steps{
-            dsl{
+    private generateSteps() {
+        this.jobDsl.steps {
+            dsl {
                 external('jenkins/jobdsl/load_jobdsl.groovy')
                 lookupStrategy('SEED_JOB')
             }
