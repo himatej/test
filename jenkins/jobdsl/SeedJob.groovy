@@ -7,7 +7,7 @@ class SeedJob {
     def branchEnv
 
     SeedJob(binding) {
-        this.branchEnv = binding.variables.get(SeedSubFolder.branchParamKey)
+        this.branchEnv = binding.variables.get(SeedSubFolderJob.branchParamKey)
         this.jobDsl = BaseJob.getFreeStyleJob(binding.jobFactory, this.branchEnv + '/seed')
     }
 
