@@ -74,7 +74,7 @@ class GhPrbHook {
                     }
                     steps {
                         phase("${folder}") {
-                            phaseJob(this.currentPath + '/' + foldersToCheck.get(folder)) {
+                            phaseJob(this.currentPath + foldersToCheck.get(folder)) {
                                 currentJobParameters(false)
                                 parameters {
                                     //$GIT_BRANCH is set by jenkins when ghprbhook is triggered
