@@ -13,12 +13,22 @@ class SeedJob {
 
     def generate() {
         this.generateParams()
+        this.generateSteps()
         return this
     }
 
     private generateParams() {
         this.jobDsl.parameters {
-            stringParam(this.branchParamKey, this.branchParamValue, '')
+            stringParam(this.branchParamKey, this.branchEnv, '')
+        }
+    }
+
+    private generateSteps(){
+        this.jobDsl.steps{
+            dsl{
+                text('new ControllerJob(binding).generate()')
+                lookupStrategy('SEED_JOB')
+            }
         }
     }
 }
