@@ -1,10 +1,11 @@
 import util.*
 
-class SeedJob extends BaseJob{
+class SeedJob extends BaseJob {
     def branchEnv
 
     SeedJob(binding) {
         super(binding, 'freestyle', binding.variables.get(SeedSubFolderJob.branchParamKey) + '/seed')
+        this.branchEnv = binding.variables.get(SeedSubFolderJob.branchParamKey)
     }
 
     def generate() {
