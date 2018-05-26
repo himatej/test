@@ -7,6 +7,7 @@ class GhPrbHook {
     def branchParamKey = 'Branch'
     def branchParamValue = '${sha1}'
     def branchEnv
+    def currentPath
 
     final static foldersToCheck = [
             controller: 'Controller',
@@ -17,6 +18,7 @@ class GhPrbHook {
         this.jobDsl = BaseJob.getMultiJob(binding.jobFactory, 'ghprbhook')
         this.BUILD_URL = binding.variables.get('BUILD_URL')
         this.branchEnv = binding.variables.get(SeedJob.branchParamKey)
+        this.currentPath = binding.variables.get('JOB_NAME').replace(binding.variables.get('JOB_BASE_NAME'), "")
     }
 
     def generate() {
@@ -26,7 +28,7 @@ class GhPrbHook {
         //dont trigger github merge hook for non master builds
         if (!BUILD_URL.contains('private')) {
             this.generateTriggers()
-        }else{
+        } else {
             this.branchParamValue = this.branchEnv
         }
 
@@ -72,7 +74,7 @@ class GhPrbHook {
                     }
                     steps {
                         phase("${folder}") {
-                            phaseJob(foldersToCheck.get(folder)) {
+                            phaseJob(this.currentPath + '/' + foldersToCheck.get(folder)) {
                                 currentJobParameters(false)
                                 parameters {
                                     //$GIT_BRANCH is set by jenkins when ghprbhook is triggered
