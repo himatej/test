@@ -8,6 +8,7 @@ class SeedSubFolderJob extends BaseJob{
     }
 
     def generate() {
+        super.generate()
         this.generateParams()
         this.generateSteps()
         return this
