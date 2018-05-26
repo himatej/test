@@ -1,27 +1,23 @@
 import util.*
 
-class SeedSubFolderJob {
-    def jobDsl
-    def gitScm
+class SeedSubFolderJob extends BaseJob{
     def static branchParamKey = 'BRANCH_TO_BUILD'
 
     SeedSubFolderJob(binding) {
-        this.jobDsl = BaseJob.getFreeStyleJob(binding.jobFactory, 'seed_subfolder')
+        super(binding, 'freestyle', 'seed_subfolder')
     }
 
     def generate() {
         this.generateParams()
         this.generateSteps()
-        this.generateGit()
         return this
     }
 
-    private generateGit() {
-        this.gitScm = new GitScm()
+    protected generateGit() {
         this.gitScm.with {
             gitBranch = '${' + branchParamKey + '}'
         }
-        this.gitScm.generate(this.jobDsl)
+        super.generateGit()
     }
 
     private generateParams() {

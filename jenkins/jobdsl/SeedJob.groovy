@@ -1,34 +1,28 @@
 import util.*
 
-class SeedJob {
-    def jobDsl
-    def gitScm
-    def static branchParamKey = 'Branch'
+class SeedJob extends BaseJob{
     def branchEnv
 
     SeedJob(binding) {
-        this.branchEnv = binding.variables.get(SeedSubFolderJob.branchParamKey)
-        this.jobDsl = BaseJob.getFreeStyleJob(binding.jobFactory, this.branchEnv + '/seed')
+        super(binding, 'freestyle', binding.variables.get(SeedSubFolderJob.branchParamKey) + '/seed')
     }
 
     def generate() {
         this.generateParams()
         this.generateSteps()
-        this.generateGit()
         return this
     }
 
-    private generateGit() {
-        this.gitScm = new GitScm()
+    protected generateGit() {
         this.gitScm.with {
             gitBranch = '${' + branchParamKey + '}'
         }
-        this.gitScm.generate(this.jobDsl)
+        super.generateGit()
     }
 
     private generateParams() {
         this.jobDsl.parameters {
-            stringParam(this.branchParamKey, this.branchEnv, '')
+            stringParam(branchParamKey, this.branchEnv, '')
         }
     }
 

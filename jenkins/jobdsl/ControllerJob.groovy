@@ -1,34 +1,30 @@
 import util.*
 
-class ControllerJob {
-    def jobDsl
-    def gitScm
-    def branchParamKey = 'Branch'
+class ControllerJob extends BaseJob{
     def defaultBranchValue
 
     ControllerJob(binding) {
-        this.defaultBranchValue = binding.variables.get(SeedJob.branchParamKey)
-        this.jobDsl = BaseJob.getFreeStyleJob(binding.jobFactory, 'Controller')
+        super(binding, 'freestyle', 'Controller')
+        this.defaultBranchValue = this.dslEnvVars.get(branchParamKey)
     }
 
     def generate() {
-        this.generateGit()
+        super.generate()
         this.generateParams()
         this.generateSteps()
         return this
     }
 
-    private generateGit() {
-        this.gitScm = new GitScm()
+    protected generateGit() {
         this.gitScm.with {
-            gitBranch = 'refs/remotes/origin/${' + this.branchParamKey + '}'
+            gitBranch = 'refs/remotes/origin/${' + branchParamKey + '}'
         }
-        this.gitScm.generate(this.jobDsl)
+        super.generateGit()
     }
 
     private generateParams() {
         this.jobDsl.parameters {
-            stringParam(this.branchParamKey, this.defaultBranchValue, '')
+            stringParam(branchParamKey, this.defaultBranchValue, '')
         }
     }
 

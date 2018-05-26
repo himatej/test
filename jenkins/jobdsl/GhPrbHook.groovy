@@ -1,13 +1,8 @@
 import util.*
 
-class GhPrbHook {
-    def jobDsl
-    def gitScm
-    def BUILD_URL
-    def branchParamKey = 'Branch'
+class GhPrbHook extends BaseJob{
     def branchParamValue = '${sha1}'
     def branchEnv
-    def currentPath
 
     final static foldersToCheck = [
             controller: 'Controller',
@@ -15,15 +10,12 @@ class GhPrbHook {
     ]
 
     GhPrbHook(binding) {
-        this.jobDsl = BaseJob.getMultiJob(binding.jobFactory, 'ghprbhook')
-        this.BUILD_URL = binding.variables.get('BUILD_URL')
-        this.branchEnv = binding.variables.get(SeedJob.branchParamKey)
-        this.currentPath = binding.variables.get('JOB_NAME').replace(binding.variables.get('JOB_BASE_NAME'), "")
+        super(binding, 'multi', 'ghprbhook')
+        this.branchEnv = dslEnvVars.get(branchParamKey)
     }
 
     def generate() {
-
-        this.generateGit()
+        super.generate()
 
         //dont trigger github merge hook for non master builds
         if (!BUILD_URL.contains('private')) {
@@ -39,17 +31,16 @@ class GhPrbHook {
         return this
     }
 
-    def generateGit() {
-        this.gitScm = new GitScm()
+    protected generateGit() {
         this.gitScm.with {
             gitBranch = '${' + branchParamKey + '}'
             remoteRefSpec = '+refs/pull/*:refs/remotes/origin/pr/*'
             isClone = true
         }
-        this.gitScm.generate(this.jobDsl)
+        super.generateGit()
     }
 
-    def generateTriggers() {
+    private generateTriggers() {
         this.jobDsl.triggers {
             githubPullRequest {
                 admin(GitScm.githubUser)
@@ -61,7 +52,7 @@ class GhPrbHook {
         }
     }
 
-    def generateSteps() {
+    private generateSteps() {
         this.jobDsl.steps {
             //fix for new changes to master not detecting
             shell("sudo git fetch")
@@ -88,9 +79,9 @@ class GhPrbHook {
         }
     }
 
-    def generateParams() {
+    private generateParams() {
         this.jobDsl.parameters {
-            stringParam(this.branchParamKey, this.branchParamValue, '')
+            stringParam(branchParamKey, this.branchParamValue, '')
         }
     }
 }
