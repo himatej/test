@@ -26,7 +26,7 @@ class SeedSubFolderJob {
 
     private generateParams() {
         this.jobDsl.parameters {
-            stringParam(this.branchParamKey, 'master', '')
+            stringParam(branchParamKey, 'master', '')
         }
     }
 
@@ -39,6 +39,17 @@ class SeedSubFolderJob {
             dsl {
                 external('jenkins/jobdsl/seed.groovy')
                 lookupStrategy('SEED_JOB')
+            }
+
+            //trigger newly generated seed job
+            downstreamParameterized {
+                trigger('${' + branchParamKey + '}/seed') {
+                    block {
+                        buildStepFailure('FAILURE')
+                        failure('FAILURE')
+                        unstable('UNSTABLE')
+                    }
+                }
             }
         }
     }
