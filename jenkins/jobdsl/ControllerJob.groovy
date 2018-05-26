@@ -18,7 +18,7 @@ class ControllerJob {
         return this
     }
 
-    def generateGit() {
+    private generateGit() {
         this.gitScm = new GitScm()
         this.gitScm.with {
             gitBranch = 'refs/remotes/origin/${' + this.branchParamKey + '}'
@@ -26,13 +26,13 @@ class ControllerJob {
         this.gitScm.generate(this.jobDsl)
     }
 
-    def generateParams() {
+    private generateParams() {
         this.jobDsl.parameters {
             stringParam(this.branchParamKey, this.defaultBranchValue, '')
         }
     }
 
-    def generateSteps() {
+    private generateSteps() {
         this.jobDsl.steps {
             shell('echo "Running controller job"')
         }

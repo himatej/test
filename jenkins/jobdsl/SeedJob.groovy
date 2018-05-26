@@ -3,7 +3,6 @@ import util.*
 class SeedJob {
     def jobDsl
     def static branchParamKey = 'Branch'
-    def branchParamValue
     def branchEnv
 
     SeedJob(binding) {
@@ -26,7 +25,7 @@ class SeedJob {
     private generateSteps(){
         this.jobDsl.steps{
             dsl{
-                text('new ControllerJob(binding).generate()')
+                external('jenkins/jobdsl/load_jobdsl.groovy')
                 lookupStrategy('SEED_JOB')
             }
         }
