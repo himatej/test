@@ -9,8 +9,8 @@ class GhPrbHook {
     def branchEnv
 
     final static foldersToCheck = [
-            controller: 'controllerJob',
-            datapath  : 'datapathJob'
+            controller: 'Controller',
+            datapath  : 'Datapath'
     ]
 
     GhPrbHook(binding) {
