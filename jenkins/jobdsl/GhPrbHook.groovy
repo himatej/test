@@ -4,9 +4,9 @@ class GhPrbHook extends BaseJob{
     def branchParamValue = '${sha1}'
     def branchEnv
 
-    final static foldersToCheck = [
-            controller: 'Controller',
-            datapath  : 'Datapath'
+    final static jobToFolders = [
+            Controller: ['controller', 'gosrc'],
+            Datapath  : ['datapath']
     ]
 
     GhPrbHook(binding) {
@@ -58,14 +58,14 @@ class GhPrbHook extends BaseJob{
             shell("sudo git fetch")
 
             //Loop through all folders to check for changes and run respective jobs
-            for (folder in foldersToCheck.keySet()) {
+            for (job in jobToFolders.keySet()) {
                 conditionalSteps {
                     condition {
-                        shell("\${WORKSPACE}/jenkins/shell/checkchanges.sh ${folder}")
+                        shell("\${WORKSPACE}/jenkins/shell/checkchanges.sh '${jobToFolders.get(job).join('/ ')}'")
                     }
                     steps {
-                        phase("${folder}") {
-                            phaseJob(this.currentPath + foldersToCheck.get(folder)) {
+                        phase("${job}") {
+                            phaseJob(this.currentPath + job) {
                                 currentJobParameters(false)
                                 parameters {
                                     //$GIT_BRANCH is set by jenkins when ghprbhook is triggered
